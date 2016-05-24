@@ -14,6 +14,5 @@ server.pid
 /dist/
 .cache
 .sbtserver
-build.sbt
 project/project
 project/target
