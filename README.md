@@ -1,0 +1,2 @@
+# sCalc
+Scala - Play Calculator
