@@ -14,7 +14,7 @@ class PatternExpEvaluatorTest extends Specification {
   "Evaluator" should {
 
     "evaluate single number as is" in {
-      evaluator.eval("4") must beEqualTo(EvaluatorResult(true, 4))
+      evaluator("4") must beEqualTo(EvaluatorResult(true, 4))
     }
 
   }

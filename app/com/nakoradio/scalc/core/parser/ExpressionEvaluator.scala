@@ -2,7 +2,7 @@ package com.nakoradio.scalc.core.parser
 
 trait ExpressionEvaluator {
 
-  def eval(input: String): EvaluatorResult
+  def apply(input: String): EvaluatorResult
 
 }
 

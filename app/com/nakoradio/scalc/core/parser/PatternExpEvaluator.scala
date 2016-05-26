@@ -4,8 +4,7 @@ import scala.util.parsing.combinator.RegexParsers
 
 object PatternExpEvaluator extends ExpressionEvaluator {
 
-  def eval(input: String): EvaluatorResult = {
-
+  def apply(input: String): EvaluatorResult = {
     val parser = new PatternParser()
     parser.parseAll(parser.expression, input) match {
       case parser.Success(value, _) => EvaluatorResult(true, value)
