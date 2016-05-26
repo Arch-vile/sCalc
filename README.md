@@ -38,6 +38,6 @@ Tips and ideas:
 - Heroku might be a good place to publish your service.
 - You might want to google for "Reverse Polish Notation".
 
-# Derivations from spec
+# Deviations from spec
 * Returned JSON is correctly formatted by having variable names in double quotes
 
