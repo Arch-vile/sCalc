@@ -2,10 +2,23 @@ package com.nakoradio.scalc.core.parser
 
 import scala.util.parsing.combinator.RegexParsers
 
-class PatternExpEvaluator extends RegexParsers with ExpressionEvaluator {
+object PatternExpEvaluator extends ExpressionEvaluator {
 
   def eval(input: String): EvaluatorResult = {
-    EvaluatorResult(true, 42)
+
+    val parser = new PatternParser()
+    parser.parseAll(parser.expression, input) match {
+      case parser.Success(value, _) => EvaluatorResult(true, value)
+    }
+
+  }
+
+  class PatternParser extends RegexParsers {
+
+    def number: Parser[Int] = """[0-9]+""".r ^^ { _.toInt }
+
+    def expression: Parser[Int] = number
+
   }
 
 }
