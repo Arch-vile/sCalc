@@ -11,7 +11,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
 
   "Routes" should {
 
-    "send 404 on a bad request" in  {
+    "send 404 on a bad request" in {
       route(app, FakeRequest(GET, "/boum")).map(status(_)) mustBe Some(NOT_FOUND)
     }
 
@@ -24,7 +24,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Your new application is ready.")
+      contentAsString(home) must include("Your new application is ready.")
     }
 
   }
@@ -35,6 +35,18 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
       contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "0"
       contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "1"
       contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "2"
+    }
+
+  }
+
+  "EvaluatorController" should {
+
+    "return successful evaluation with result" in {
+      contentAsString(route(app, FakeRequest(GET, "/calculus?query=2")).get) mustBe "{\"error\":false,\"result\":2}"
+    }
+
+    "return 200 for success evaluation" in {
+      route(app, FakeRequest(GET, "/calculus?query=2")).map(status(_)) mustBe Some(OK)
     }
 
   }

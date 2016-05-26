@@ -1,15 +1,16 @@
-package com.nakoradio.scalc.core.parser
+package services
 
 import scala.util.parsing.combinator.RegexParsers
+import javax.inject._
 
-object PatternExpEvaluator extends ExpressionEvaluator {
+@Singleton
+class PatternExpEvaluator extends ExpressionEvaluator {
 
   def apply(input: String): EvaluatorResult = {
     val parser = new PatternParser()
     parser.parseAll(parser.expression, input) match {
-      case parser.Success(value, _) => EvaluatorResult(true, value)
+      case parser.Success(value, _) => EvaluatorResult(false, value)
     }
-
   }
 
   class PatternParser extends RegexParsers {
