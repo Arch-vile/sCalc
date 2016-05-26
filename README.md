@@ -30,7 +30,7 @@ There are some constraints that you need to follow. These are followed by some t
 
 Required:
 - As discussed, the solution should Scala based. 
-- The API has to be testable online from Futurice office.
+- The API has to be testable online 
 - The source code should be shared, either on public repository or a repository that Futurice can access. For example, GitHub is a good option.
 
 Tips and ideas:
