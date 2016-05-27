@@ -21,8 +21,20 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("4") must beEqualTo(EvaluatorSuccess(4))
     }
 
+    "evaluate simple sum" in {
+      evaluator("5 + 1") must beEqualTo(EvaluatorSuccess(6))
+    }
+
+    "evaluate sum for odd count of numbers" in {
+      evaluator("5 + 1 + 5") must beEqualTo(EvaluatorSuccess(11))
+    }
+
+    "evaluate sum for even count of numbers" in {
+      evaluator("5 + 1 + 5 + 1") must beEqualTo(EvaluatorSuccess(12))
+    }
+
     "return error status when evaluation fails" in {
-      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [end of input expected] on input [4 + a] at position [3]"))
+      evaluator("4 + a") must haveClass[EvaluatorFailure]
     }
 
   }
