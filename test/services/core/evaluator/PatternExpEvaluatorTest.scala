@@ -33,6 +33,14 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("5 + 1 + 5 + 1") must beEqualTo(EvaluatorSuccess(12))
     }
 
+    "evaluate simple subtract" in {
+      evaluator("5 - 1") must beEqualTo(EvaluatorSuccess(4))
+    }
+
+    "evaluate multiple subtract" in {
+      evaluator("5 - 5 - 1") must beEqualTo(EvaluatorSuccess(-1))
+    }
+
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
     }
