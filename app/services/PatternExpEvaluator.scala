@@ -22,7 +22,9 @@ class PatternExpEvaluator extends ExpressionEvaluator {
 
     def number: Parser[Int] = """[0-9]+""".r ^^ { _.toInt }
 
-    def mul: Parser[Int] = number ~ rep("*" ~ number) ^^ {
+    def multipliable: Parser[Int] = "(" ~> summedTerms <~ ")" | number
+
+    def mul: Parser[Int] = multipliable ~ rep("*" ~ multipliable) ^^ {
       case base ~ list => list.foldLeft(base) {
         case (z, "*" ~ n) => z * n
       }

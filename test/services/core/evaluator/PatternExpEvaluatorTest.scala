@@ -53,8 +53,24 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("3 * 2 * 2") must beEqualTo(EvaluatorSuccess(12))
     }
 
+    "evaluate term precedence " in {
+      evaluator("3 + 2 * 2") must beEqualTo(EvaluatorSuccess(7))
+    }
+
     "evaluate mixed multiply and sums" in {
       evaluator("55 + 12 * 231 * 1323 - 52 + 3211 * 22") must beEqualTo(EvaluatorSuccess(3738001))
+    }
+
+    "evaluate parenthesis" in {
+      evaluator("1 + ( 2 + 2 ) * 4") must beEqualTo(EvaluatorSuccess(17))
+    }
+
+    "evaluate  nested parenthesis" in {
+      evaluator("1 + ( ( 2 + 3 ) + 2 ) * 4") must beEqualTo(EvaluatorSuccess(29))
+    }
+
+    "evaluate full parenthesis" in {
+      evaluator("( 1 + 2 * 3 )") must beEqualTo(EvaluatorSuccess(7))
     }
 
     "return error status when evaluation fails" in {
