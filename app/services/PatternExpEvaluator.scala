@@ -21,7 +21,14 @@ class PatternExpEvaluator extends ExpressionEvaluator {
   class PatternParser extends RegexParsers {
 
     def number: Parser[Int] = """[0-9]+""".r ^^ { _.toInt }
-    def term: Parser[Int] = number
+
+    def mul: Parser[Int] = number ~ rep("*" ~ number) ^^ {
+      case base ~ list => list.foldLeft(base) {
+        case (z, "*" ~ n) => z * n
+      }
+    }
+
+    def term: Parser[Int] = mul | number
 
     def summedTerms: Parser[Int] = term ~ rep(("+" | "-") ~ term) ^^ {
       case base ~ list => list.foldLeft(base) {

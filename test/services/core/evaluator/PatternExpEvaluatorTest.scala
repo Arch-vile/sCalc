@@ -45,6 +45,18 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("55 + 12 - 231 - 1323 + 52 + 32131 - 22") must beEqualTo(EvaluatorSuccess(30674))
     }
 
+    "evaluate simple multiply" in {
+      evaluator("3 * 2") must beEqualTo(EvaluatorSuccess(6))
+    }
+
+    "evaluate odd terms in multiply" in {
+      evaluator("3 * 2 * 2") must beEqualTo(EvaluatorSuccess(12))
+    }
+
+    "evaluate mixed multiply and sums" in {
+      evaluator("55 + 12 * 231 * 1323 - 52 + 3211 * 22") must beEqualTo(EvaluatorSuccess(3738001))
+    }
+
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
     }
