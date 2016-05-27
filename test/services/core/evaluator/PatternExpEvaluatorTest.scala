@@ -41,6 +41,10 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("5 - 5 - 1") must beEqualTo(EvaluatorSuccess(-1))
     }
 
+    "evaluate sum and subtracts" in {
+      evaluator("55 + 12 - 231 - 1323 + 52 + 32131 - 22") must beEqualTo(EvaluatorSuccess(30674))
+    }
+
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
     }

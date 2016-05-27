@@ -21,24 +21,16 @@ class PatternExpEvaluator extends ExpressionEvaluator {
   class PatternParser extends RegexParsers {
 
     def number: Parser[Int] = """[0-9]+""".r ^^ { _.toInt }
-    def sum: Parser[Int] = (number | sum) ~ "+" ~ number ^^ {
-      case x ~ "+" ~ y => x + y
-    }
+    def term: Parser[Int] = number
 
-    def subtr: Parser[Int] = (number | sum) ~ "-" ~ number ^^ {
-      case x ~ "-" ~ y => x - y
-    }
-
-    def summable = subtr | sum
-
-    def sumOfSum: Parser[Int] = summable ~ rep("+" ~ (summable | number) | "-" ~ (summable | number)) ^^ {
+    def summedTerms: Parser[Int] = term ~ rep(("+" | "-") ~ term) ^^ {
       case base ~ list => list.foldLeft(base) {
         case (z, "+" ~ s) => z + s
         case (z, "-" ~ s) => z - s
       }
     }
 
-    def expression: Parser[Int] = sumOfSum | number
+    def expression: Parser[Int] = summedTerms
 
   }
 
