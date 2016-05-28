@@ -15,15 +15,31 @@ class PatternExpEvaluatorTest extends Specification {
 
   val evaluator = new PatternExpEvaluator()
 
-  // Basic operations
-  "For simple operations evaluator" should {
-    "evaluate single number as is" in {
+  // Detect numbers
+  "For numbers evaluator" should {
+    "evaluate integers" in {
       evaluator("4") must beEqualTo(EvaluatorSuccess(4))
+      evaluator("-4") must beEqualTo(EvaluatorSuccess(-4))
+
     }
 
-    "evaluate negative number as is" in {
-      evaluator("-4") must beEqualTo(EvaluatorSuccess(-4))
+    "evaluate basic decimals" in {
+      evaluator("12.023") must beEqualTo(EvaluatorSuccess(12.023))
+      evaluator("-122.2") must beEqualTo(EvaluatorSuccess(-122.2))
+
     }
+
+    "evaluate special decimals" in {
+      evaluator(".2") must beEqualTo(EvaluatorSuccess(0.2))
+      evaluator("-.2") must beEqualTo(EvaluatorSuccess(-0.2))
+      evaluator("10.") must beEqualTo(EvaluatorSuccess(10))
+
+    }
+
+  }
+
+  // Basic operations
+  "For simple operations evaluator" should {
 
     "evaluate simple sum" in {
       evaluator("5 + 1") must beEqualTo(EvaluatorSuccess(6))
@@ -79,6 +95,7 @@ class PatternExpEvaluatorTest extends Specification {
 
     "evaluate  nested parenthesis" in {
       evaluator("1 + ( ( 2 + 3 ) + 2 ) * 4") must beEqualTo(EvaluatorSuccess(29))
+      evaluator("2 * (23/(33))- 23 * (23)") must beEqualTo(EvaluatorSuccess(-527.606060606))
     }
 
     "evaluate full parenthesis" in {
