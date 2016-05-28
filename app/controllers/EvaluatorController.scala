@@ -15,6 +15,7 @@ import services.ExpressionEvaluator
 import services.EvaluatorResult
 import services.EvaluatorSuccess
 import services.EvaluatorFailure
+import java.util.Base64
 
 @Singleton
 class EvaluatorController @Inject() (evaluator: ExpressionEvaluator) extends Controller {
@@ -36,8 +37,8 @@ class EvaluatorController @Inject() (evaluator: ExpressionEvaluator) extends Con
   }
 
   def evaluate(expression: String) = Action {
-
-    evaluator(expression) match {
+    val decodedExp = new String(Base64.getDecoder.decode(expression), "UTF-8")
+    evaluator(decodedExp) match {
       case s: EvaluatorSuccess => Ok(Json.toJson(s))
       case f: EvaluatorFailure => BadRequest(Json.toJson(f))
     }

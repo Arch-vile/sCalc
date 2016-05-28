@@ -10,6 +10,8 @@ import javax.inject._
 @Singleton
 class PatternExpEvaluator extends ExpressionEvaluator {
 
+  final val NUMBER_REGEXP = "[-+]?(\\d+(\\.\\d*)?|\\.\\d+)"
+
   def apply(input: String): EvaluatorResult = {
     val parser = new PatternParser()
     parser.parseAll(parser.expression, input) match {
@@ -20,7 +22,7 @@ class PatternExpEvaluator extends ExpressionEvaluator {
 
   class PatternParser extends RegexParsers {
 
-    def number: Parser[BigDecimal] = """[-+]?(\d+(\.\d*)?|\.\d+)""".r ^^ {
+    def number: Parser[BigDecimal] = NUMBER_REGEXP.r ^^ {
       BigDecimal(_)
     }
 
@@ -47,7 +49,9 @@ class PatternExpEvaluator extends ExpressionEvaluator {
   }
 
   def errorOut(input: String, message: String, next: Reader[Char]): String = {
-    f"Parsing failed due to [$message] on input [$input] at position [${next.pos.column}]"
+    // Until proper error reporting from parser, lets make number parsing errors a bit user friendly
+    val nice = message.replace(NUMBER_REGEXP, "number").replaceAll("string matching regex ", "")
+    f"Parsing failed due to [$nice] on input [$input] at position [${next.pos.column}]"
   }
 
 }

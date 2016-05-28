@@ -42,15 +42,17 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
   "EvaluatorController" should {
 
     "return successful evaluation with result" in {
-      contentAsString(route(app, FakeRequest(GET, "/calculus?query=2")).get) mustBe "{\"error\":false,\"result\":2}"
+      // NCsyLjEgLTQqMg== -> 4+2.1 -4*2 -> -1.9
+      contentAsString(route(app, FakeRequest(GET, "/calculus?query=NCsyLjEgLTQqMg==")).get) mustBe "{\"error\":false,\"result\":-1.9}"
     }
 
     "return 200 for success evaluation" in {
-      route(app, FakeRequest(GET, "/calculus?query=2")).map(status(_)) mustBe Some(200)
+      route(app, FakeRequest(GET, "/calculus?query=NCsyLjEgLTQqMg==")).map(status(_)) mustBe Some(200)
     }
 
     "return failed evaluation with message" in {
-      contentAsString(route(app, FakeRequest(GET, "/calculus?query=1nn")).get) mustBe "{\"error\":true,\"message\":\"Parsing failed due to [end of input expected] on input [1nn] at position [2]\"}"
+      contentAsString(route(app, FakeRequest(GET, "/calculus?query=bm9uc2Vuc2U=")).get) must
+        startWith("{\"error\":true,\"message\":\"Parsing failed due to ")
     }
 
     "return 400 for failed evaluation" in {
