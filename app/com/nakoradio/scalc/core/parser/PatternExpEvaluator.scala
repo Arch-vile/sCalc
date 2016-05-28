@@ -22,8 +22,10 @@ class PatternExpEvaluator extends ExpressionEvaluator {
     }
   }
 
+  // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
   def clean(input: String): String = {
-    input.replaceAll("\n", "")
+    // First strip whitespace, then add missing '*' between number and parenthesis
+    input.replaceAll("\\s", "").replaceAll("""(\d)\(""", "$1*(").replaceAll("""\)(\d)""", ")*$1")
   }
 
 }
