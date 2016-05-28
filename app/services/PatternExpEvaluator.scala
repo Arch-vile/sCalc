@@ -10,48 +10,56 @@ import javax.inject._
 @Singleton
 class PatternExpEvaluator extends ExpressionEvaluator {
 
-  final val NUMBER_REGEXP = "[-+]?(\\d+(\\.\\d*)?|\\.\\d+)"
-
   def apply(input: String): EvaluatorResult = {
     val parser = new PatternParser()
-    parser.parseAll(parser.expression, input) match {
-      case parser.Success(value, _)        => EvaluatorSuccess(value)
-      case parser.NoSuccess(message, next) => EvaluatorFailure(errorOut(input, message, next))
+    try {
+      parser.parseAll(parser.expression, input) match {
+        case parser.Success(value, _)        => EvaluatorSuccess(value)
+        case parser.NoSuccess(message, next) => EvaluatorFailure(parser.nicerError(input, message, next))
+      }
+    } catch {
+      case ex: ParserException => EvaluatorFailure(ex.message)
+      case e: Exception        => EvaluatorFailure("Unexpected error")
     }
   }
 
-  class PatternParser extends RegexParsers {
+}
 
-    def number: Parser[BigDecimal] = NUMBER_REGEXP.r ^^ {
-      BigDecimal(_)
-    }
+case class ParserException(message: String) extends Exception
 
-    def multipliable: Parser[BigDecimal] = "(" ~> summedTerms <~ ")" | number
+class PatternParser extends RegexParsers {
 
-    def mul: Parser[BigDecimal] = multipliable ~ rep(("*" | "/") ~ multipliable) ^^ {
-      case base ~ list => list.foldLeft(base) {
-        case (z, "*" ~ n) => z * n
-        case (z, "/" ~ n) => z / n
-      }
-    }
+  final val NUMBER_REGEXP = "[-+]?(\\d+(\\.\\d*)?|\\.\\d+)"
 
-    def term: Parser[BigDecimal] = mul | number
-
-    def summedTerms: Parser[BigDecimal] = term ~ rep(("+" | "-") ~ term) ^^ {
-      case base ~ list => list.foldLeft(base) {
-        case (z, "+" ~ s) => z + s
-        case (z, "-" ~ s) => z - s
-      }
-    }
-
-    def expression: Parser[BigDecimal] = summedTerms
-
+  def number: Parser[BigDecimal] = NUMBER_REGEXP.r ^^ {
+    BigDecimal(_)
   }
 
-  def errorOut(input: String, message: String, next: Reader[Char]): String = {
+  def multipliable: Parser[BigDecimal] = "(" ~> summedTerms <~ ")" | number
+
+  def mul: Parser[BigDecimal] = multipliable ~ rep(("*" | "/") ~ multipliable) ^^ {
+    case base ~ list => list.foldLeft(base) {
+      case (z, "*" ~ n) => z * n
+      case (z, "/" ~ n) => if (n != 0) { z / n } else {
+        throw ParserException("Division by zero")
+      }
+    }
+  }
+
+  def term: Parser[BigDecimal] = mul | number
+
+  def summedTerms: Parser[BigDecimal] = term ~ rep(("+" | "-") ~ term) ^^ {
+    case base ~ list => list.foldLeft(base) {
+      case (z, "+" ~ s) => z + s
+      case (z, "-" ~ s) => z - s
+    }
+  }
+
+  def expression: Parser[BigDecimal] = summedTerms
+
+  def nicerError(input: String, message: String, next: Reader[Char]): String = {
     // Until proper error reporting from parser, lets make number parsing errors a bit user friendly
     val nice = message.replace(NUMBER_REGEXP, "number").replaceAll("string matching regex ", "")
     f"Parsing failed due to [$nice] on input [$input] at position [${next.pos.column}]"
   }
-
 }

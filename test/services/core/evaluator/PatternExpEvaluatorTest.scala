@@ -122,6 +122,7 @@ class PatternExpEvaluatorTest extends Specification {
     "Avoid double precision problem" in {
       evaluator("0.585 * 3.2") must beEqualTo(EvaluatorSuccess(1.872))
     }
+
   }
 
   // Error handling
@@ -133,6 +134,10 @@ class PatternExpEvaluatorTest extends Specification {
 
     "return nicer error message for not numbers" in {
       evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4 + a] at position [5]"))
+    }
+
+    "Divide by zero" in {
+      evaluator("2 / 0") must haveClass[EvaluatorFailure]
     }
   }
 }
