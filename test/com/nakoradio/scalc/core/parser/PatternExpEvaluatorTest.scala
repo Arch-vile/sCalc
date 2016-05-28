@@ -88,6 +88,7 @@ class PatternExpEvaluatorTest extends Specification {
 
     "evaluate mixed multiply and sums" in {
       evaluator("55 + 12 * 231 * 1323 - 52 + 3211 * 22") must beEqualTo(EvaluatorSuccess(3738001))
+      evaluator("1+(2*4/4+2(3-1*3)/2/3+3)*(3/-2-4+1*1*-4((2*2*(1-5))*2/4))") must beEqualTo(EvaluatorSuccess(133.5))
     }
 
   }
