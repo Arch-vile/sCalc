@@ -6,7 +6,7 @@ Scala - Play Calculator
 Your task is to setup a simple web service to implement a calculator. The service offers an endpoint that reads a string input and parses it. It should return either an HTTP error code, or a solution to the calculation in JSON form.
 
 An example calculus query:
-- Original query: 2 * (23/(3*3))- 23 * (2*3)
+- Original query: 2 x (23/(3x3))- 23 x (2x3)
 - With encoding: MiAqICgyMy8oMyozKSktIDIzICogKDIqMyk=
 
 
