@@ -11,14 +11,15 @@ import play.api._
 import play.api.mvc._
 
 import services.Counter
-import services.ExpressionEvaluator
-import services.EvaluatorResult
-import services.EvaluatorSuccess
-import services.EvaluatorFailure
+import com.nakoradio.scalc.core.parser.ExpressionEvaluator
+import com.nakoradio.scalc.core.parser.EvaluatorResult
+import com.nakoradio.scalc.core.parser.EvaluatorSuccess
+import com.nakoradio.scalc.core.parser.EvaluatorFailure
 import java.util.Base64
+import services.ArithmeticEvaluator
 
 @Singleton
-class EvaluatorController @Inject() (evaluator: ExpressionEvaluator) extends Controller {
+class EvaluatorController @Inject() (evaluator: ArithmeticEvaluator) extends Controller {
 
   implicit val resultWriter = new Writes[EvaluatorResult] {
     def writes(result: EvaluatorResult): JsValue = {

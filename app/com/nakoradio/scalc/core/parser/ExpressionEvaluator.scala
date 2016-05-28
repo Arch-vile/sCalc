@@ -1,11 +1,4 @@
-package services
-
-import play.api.libs.json.JsString
-import play.api.libs.json.Format
-import play.api.libs.json.JsValue
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsResult
-import play.api.libs.json.JsSuccess
+package com.nakoradio.scalc.core.parser
 
 trait ExpressionEvaluator {
 

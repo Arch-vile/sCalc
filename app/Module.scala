@@ -2,8 +2,8 @@ import com.google.inject.AbstractModule
 import java.time.Clock
 
 import services.{ ApplicationTimer, AtomicCounter, Counter }
-import services.ExpressionEvaluator
-import services.PatternExpEvaluator
+import com.nakoradio.scalc.core.parser.ExpressionEvaluator
+import com.nakoradio.scalc.core.parser.PatternExpEvaluator
 
 /**
  * This class is a Guice module that tells Guice how to bind several

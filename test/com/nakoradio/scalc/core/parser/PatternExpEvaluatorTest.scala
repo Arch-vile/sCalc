@@ -1,14 +1,10 @@
-package services.core.evaluator
+package com.nakoradio.scalc.core.parser
 
 import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
 
 import org.specs2.mutable.{ BeforeAfter, Specification }
-import services.EvaluatorResult
-import services.PatternExpEvaluator
-import services.EvaluatorSuccess
-import services.EvaluatorFailure
 import java.util.Base64
 import sun.misc.BASE64Decoder
 

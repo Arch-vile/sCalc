@@ -1,39 +1,14 @@
-package services
-
-import scala.util.parsing.combinator.RegexParsers
+package com.nakoradio.scalc.core.parser
 
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input.Reader
 
-import javax.inject._
-
-@Singleton
-class PatternExpEvaluator extends ExpressionEvaluator {
-
-  def apply(input: String): EvaluatorResult = {
-    val cleanInput = clean(input)
-    val parser = new PatternParser()
-    try {
-      parser.parseAll(parser.expression, cleanInput) match {
-        case parser.Success(value, _)        => EvaluatorSuccess(value)
-        case parser.NoSuccess(message, next) => EvaluatorFailure(parser.nicerError(cleanInput, message, next))
-      }
-    } catch {
-      case ex: ParserException => EvaluatorFailure(ex.message)
-      case e: Exception        => EvaluatorFailure("Unexpected error")
-    }
-  }
-
-  def clean(input: String): String = {
-    input.replaceAll("\n", "")
-  }
-
-}
-
 case class ParserException(message: String) extends Exception
 
+/**
+ * Scala parser combinators based implementation of arithmetic expression parsing and evaluation
+ */
 class PatternParser extends RegexParsers {
-
   final val NUMBER_REGEXP = "[-+]?(\\d+(\\.\\d*)?|\\.\\d+)"
 
   def number: Parser[BigDecimal] = NUMBER_REGEXP.r ^^ {
