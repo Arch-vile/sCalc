@@ -20,13 +20,16 @@ class PatternExpEvaluator extends ExpressionEvaluator {
 
   class PatternParser extends RegexParsers {
 
-    def number: Parser[BigDecimal] = """[-+]?(\d+(\.\d*)?|\.\d+)""".r ^^ { BigDecimal(_) }
+    def number: Parser[BigDecimal] = """[-+]?(\d+(\.\d*)?|\.\d+)""".r ^^ {
+      BigDecimal(_)
+    }
 
     def multipliable: Parser[BigDecimal] = "(" ~> summedTerms <~ ")" | number
 
-    def mul: Parser[BigDecimal] = multipliable ~ rep("*" ~ multipliable) ^^ {
+    def mul: Parser[BigDecimal] = multipliable ~ rep(("*" | "/") ~ multipliable) ^^ {
       case base ~ list => list.foldLeft(base) {
         case (z, "*" ~ n) => z * n
+        case (z, "/" ~ n) => z / n
       }
     }
 

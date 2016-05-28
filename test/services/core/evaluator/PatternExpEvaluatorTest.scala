@@ -26,7 +26,6 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate basic decimals" in {
       evaluator("12.023") must beEqualTo(EvaluatorSuccess(12.023))
       evaluator("-122.2") must beEqualTo(EvaluatorSuccess(-122.2))
-
     }
 
     "evaluate special decimals" in {
@@ -51,6 +50,10 @@ class PatternExpEvaluatorTest extends Specification {
 
     "evaluate simple multiply" in {
       evaluator("3 * 2") must beEqualTo(EvaluatorSuccess(6))
+    }
+
+    "evaluate simple division" in {
+      evaluator("7 / 2") must beEqualTo(EvaluatorSuccess(3.5))
     }
   }
 
@@ -95,7 +98,7 @@ class PatternExpEvaluatorTest extends Specification {
 
     "evaluate  nested parenthesis" in {
       evaluator("1 + ( ( 2 + 3 ) + 2 ) * 4") must beEqualTo(EvaluatorSuccess(29))
-      evaluator("2 * (23/(33))- 23 * (23)") must beEqualTo(EvaluatorSuccess(-527.606060606))
+      evaluator("2 * (23/(33))- 23 * (23)").asInstanceOf[EvaluatorSuccess].result.doubleValue() must beCloseTo(-527.6060606, 0.000001)
     }
 
     "evaluate full parenthesis" in {
@@ -112,6 +115,10 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate subtraction of negative numbers" in {
       evaluator("2 - -4") must beEqualTo(EvaluatorSuccess(6))
       evaluator("3--4") must beEqualTo(EvaluatorSuccess(7))
+    }
+
+    "Avoid double precision problem" in {
+      evaluator("0.585 * 3.2") must beEqualTo(EvaluatorSuccess(1.872))
     }
   }
 
