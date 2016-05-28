@@ -46,6 +46,7 @@ Should be running on Heroku. Here are some urls to test with:
 * 1+2x3 https://scalc2000.herokuapp.com/calculus?query=MSsyKjM=
 * (23x3)/5x(2+3x(21/7))-(4x(4x5)) https://scalc2000.herokuapp.com/calculus?query=KDIzKjMpLzUqKDIrMyooMjEvNykpLSg0LSg0LTUpKQ==
 * 4 / (2-2) https://scalc2000.herokuapp.com/calculus?query=NCAvICgyLTIp
+* 1+(2*4/4+2(3-1*3)/2/3+3)*(3/-2-4+1*1*-4((2*2*(1-5))*2/4)) = 133,5 https://scalc2000.herokuapp.com/calculus?query=MSsoMio0LzQrMigzLTEqMykvMi8zKzMpKigzLy0yLTQrMSoxKi00KCgyKjIqKDEtNSkpKjIvNCkp
 * (2.1+2)/3.2x.3x0.2 https://scalc2000.herokuapp.com/calculus?query=KDIuMSsyKS8zLjIqLjMqMC4y
 * 1+a https://scalc2000.herokuapp.com/calculus?query=MSth
 * encodeError https://scalc2000.herokuapp.com/calculus?query=n
