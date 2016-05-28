@@ -21,6 +21,10 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("4") must beEqualTo(EvaluatorSuccess(4))
     }
 
+    "evaluate negative number as is" in {
+      evaluator("-4") must beEqualTo(EvaluatorSuccess(-4))
+    }
+
     "evaluate simple sum" in {
       evaluator("5 + 1") must beEqualTo(EvaluatorSuccess(6))
     }
@@ -87,12 +91,18 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate without whitespace" in {
       evaluator("(1+2*3)") must beEqualTo(EvaluatorSuccess(7))
     }
+
+    "evaluate subtraction of negative numbers" in {
+      evaluator("2 - -4") must beEqualTo(EvaluatorSuccess(6))
+      evaluator("3--4") must beEqualTo(EvaluatorSuccess(7))
+    }
   }
 
   // Error handling
   "For errors evaluator" should {
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
+      evaluator("4---1") must haveClass[EvaluatorFailure]
     }
   }
 }

@@ -20,7 +20,7 @@ class PatternExpEvaluator extends ExpressionEvaluator {
 
   class PatternParser extends RegexParsers {
 
-    def number: Parser[Int] = """[0-9]+""".r ^^ { _.toInt }
+    def number: Parser[Int] = """[-+]?[0-9]+""".r ^^ { _.toInt }
 
     def multipliable: Parser[Int] = "(" ~> summedTerms <~ ")" | number
 
