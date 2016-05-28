@@ -55,6 +55,17 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
         startWith("{\"error\":true,\"message\":\"Parsing failed due to ")
     }
 
+    "return bad request when missing query" in {
+      route(app, FakeRequest(GET, "/calculus")).map(status(_)) mustBe Some(400)
+
+    }
+
+    "return bad request with error when base64 decode fails" in {
+      contentAsString(route(app, FakeRequest(GET, "/calculus?query=a")).get) must
+        startWith("{\"error\":true,\"message\":\"Format error in Base64 input")
+      route(app, FakeRequest(GET, "/calculus?query=a")).map(status(_)) mustBe Some(400)
+    }
+
     "return 400 for failed evaluation" in {
       route(app, FakeRequest(GET, "/calculus?query=nonsense")).map(status(_)) mustBe Some(400)
     }

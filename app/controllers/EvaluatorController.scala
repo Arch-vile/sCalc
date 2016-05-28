@@ -38,11 +38,17 @@ class EvaluatorController @Inject() (evaluator: ArithmeticEvaluator) extends Con
   }
 
   def evaluate(expression: String) = Action {
-    val decodedExp = new String(Base64.getDecoder.decode(expression), "UTF-8")
-    evaluator(decodedExp) match {
-      case s: EvaluatorSuccess => Ok(Json.toJson(s))
-      case f: EvaluatorFailure => BadRequest(Json.toJson(f))
+    try {
+      val decodedExp = new String(Base64.getDecoder.decode(expression), "UTF-8")
+      evaluator(decodedExp) match {
+        case s: EvaluatorSuccess => Ok(Json.toJson(s))
+        case f: EvaluatorFailure => BadRequest(Json.toJson(f))
+      }
+    } catch {
+      case ex: IllegalArgumentException => BadRequest(Json.toJson(EvaluatorFailure("Format error in Base64 input")))
+      case e: Exception                 => InternalServerError("Alas! Something bad happened.");
     }
+
   }
 
 }
