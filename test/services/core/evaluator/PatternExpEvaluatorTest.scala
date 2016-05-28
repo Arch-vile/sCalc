@@ -110,8 +110,9 @@ class PatternExpEvaluatorTest extends Specification {
 
   // Special cases
   "For special cases evaluator" should {
-    "evaluate without whitespace" in {
+    "evaluate regardless of white space" in {
       evaluator("(1+2*3)") must beEqualTo(EvaluatorSuccess(7))
+      evaluator(" ( 1                 +2\n*\t3   \t)") must beEqualTo(EvaluatorSuccess(7))
     }
 
     "evaluate subtraction of negative numbers" in {
