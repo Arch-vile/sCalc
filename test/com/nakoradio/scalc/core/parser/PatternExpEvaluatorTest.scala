@@ -150,7 +150,7 @@ class PatternExpEvaluatorTest extends Specification {
     }
 
     "Divide by zero" in {
-      evaluator("2 / 0") must haveClass[EvaluatorFailure]
+      evaluator("2 / 0") must beEqualTo(EvaluatorFailure("Division by zero"))
     }
   }
 }

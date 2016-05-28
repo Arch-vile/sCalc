@@ -10,7 +10,6 @@ import javax.inject._
 import play.api._
 import play.api.mvc._
 
-import services.Counter
 import com.nakoradio.scalc.core.parser.ExpressionEvaluator
 import com.nakoradio.scalc.core.parser.EvaluatorResult
 import com.nakoradio.scalc.core.parser.EvaluatorSuccess
