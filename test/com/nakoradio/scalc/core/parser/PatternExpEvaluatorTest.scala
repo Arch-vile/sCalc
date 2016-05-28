@@ -96,7 +96,8 @@ class PatternExpEvaluatorTest extends Specification {
 
     "evaluate  nested parenthesis" in {
       evaluator("1 + ( ( 2 + 3 ) + 2 ) * 4") must beEqualTo(EvaluatorSuccess(29))
-      evaluator("2 * (23/(33))- 23 * (23)").asInstanceOf[EvaluatorSuccess].result.doubleValue() must beCloseTo(-527.6060606, 0.000001)
+      evaluator("2 * (23/(33))- 23 * (23)").asInstanceOf[EvaluatorSuccess].result.doubleValue() must beCloseTo(-527.6060606, 0.0001)
+      evaluator("2 * (23/(3*3))- 23 * (2*3)").asInstanceOf[EvaluatorSuccess].result.doubleValue() must beCloseTo(-132.88888, 0.0001)
     }
 
     "evaluate full parenthesis" in {
