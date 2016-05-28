@@ -51,7 +51,6 @@ Should be running on Heroku. Here are some urls to test with:
 * encodeError https://scalc2000.herokuapp.com/calculus?query=n
 
 # Known issues
-* 3(1+2) is not supported, you need to give 3x(1+2)
 * imaginary numbers not supported :)
 
 
