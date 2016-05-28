@@ -15,8 +15,8 @@ class PatternExpEvaluatorTest extends Specification {
 
   val evaluator = new PatternExpEvaluator()
 
-  "Evaluator" should {
-
+  // Basic operations
+  "For simple operations evaluator" should {
     "evaluate single number as is" in {
       evaluator("4") must beEqualTo(EvaluatorSuccess(4))
     }
@@ -24,6 +24,18 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate simple sum" in {
       evaluator("5 + 1") must beEqualTo(EvaluatorSuccess(6))
     }
+
+    "evaluate simple subtract" in {
+      evaluator("5 - 1") must beEqualTo(EvaluatorSuccess(4))
+    }
+
+    "evaluate simple multiply" in {
+      evaluator("3 * 2") must beEqualTo(EvaluatorSuccess(6))
+    }
+  }
+
+  // Combinations
+  "For combinations evaluator" should {
 
     "evaluate sum for odd count of numbers" in {
       evaluator("5 + 1 + 5") must beEqualTo(EvaluatorSuccess(11))
@@ -33,20 +45,12 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("5 + 1 + 5 + 1") must beEqualTo(EvaluatorSuccess(12))
     }
 
-    "evaluate simple subtract" in {
-      evaluator("5 - 1") must beEqualTo(EvaluatorSuccess(4))
-    }
-
     "evaluate multiple subtract" in {
       evaluator("5 - 5 - 1") must beEqualTo(EvaluatorSuccess(-1))
     }
 
     "evaluate sum and subtracts" in {
       evaluator("55 + 12 - 231 - 1323 + 52 + 32131 - 22") must beEqualTo(EvaluatorSuccess(30674))
-    }
-
-    "evaluate simple multiply" in {
-      evaluator("3 * 2") must beEqualTo(EvaluatorSuccess(6))
     }
 
     "evaluate odd terms in multiply" in {
@@ -61,6 +65,10 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("55 + 12 * 231 * 1323 - 52 + 3211 * 22") must beEqualTo(EvaluatorSuccess(3738001))
     }
 
+  }
+
+  // Parenthesis
+  "For parenthesis evaluator" should {
     "evaluate parenthesis" in {
       evaluator("1 + ( 2 + 2 ) * 4") must beEqualTo(EvaluatorSuccess(17))
     }
@@ -72,11 +80,19 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate full parenthesis" in {
       evaluator("( 1 + 2 * 3 )") must beEqualTo(EvaluatorSuccess(7))
     }
+  }
 
+  // Special cases
+  "For special cases evaluator" should {
+    "evaluate without whitespace" in {
+      evaluator("(1+2*3)") must beEqualTo(EvaluatorSuccess(7))
+    }
+  }
+
+  // Error handling
+  "For errors evaluator" should {
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
     }
-
   }
-
 }
