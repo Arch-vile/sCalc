@@ -38,7 +38,7 @@ class EvaluatorController @Inject() (evaluator: ArithmeticEvaluator) extends Con
 
   def evaluate(expression: String) = Action {
     try {
-      val decodedExp = new String(Base64.getDecoder.decode(expression), "UTF-8")
+      val decodedExp = new String(Base64.getDecoder.decode(expression))
       evaluator(decodedExp) match {
         case s: EvaluatorSuccess => Ok(Json.toJson(s))
         case f: EvaluatorFailure => BadRequest(Json.toJson(f))
