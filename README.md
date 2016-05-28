@@ -47,6 +47,7 @@ Should be running on Heroku. Here are some urls to test with:
 * (23x3)/5x(2+3x(21/7))-(4x(4x5)) https://scalc2000.herokuapp.com/calculus?query=KDIzKjMpLzUqKDIrMyooMjEvNykpLSg0LSg0LTUpKQ==
 * 4 / (2-2) https://scalc2000.herokuapp.com/calculus?query=NCAvICgyLTIp
 * 1+a https://scalc2000.herokuapp.com/calculus?query=MSth
+* encodeError https://scalc2000.herokuapp.com/calculus?query=n
 
 # Known issues
 * 3(1+2) is not supported, you need to give 3x(1+2)
