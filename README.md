@@ -42,7 +42,7 @@ Tips and ideas:
 * Returned JSON is correctly formatted by having variable names in double quotes
 
 # Running application
-Should be deployed on Heroku. Here are some urls to test with:
+Should be running on Heroku. Here are some urls to test with:
 * 1+2x3 https://scalc2000.herokuapp.com/calculus?query=MSsyKjM=
 * (23x3)/5x(2+3x(21/7))-(4x(4x5)) https://scalc2000.herokuapp.com/calculus?query=KDIzKjMpLzUqKDIrMyooMjEvNykpLSg0LSg0LTUpKQ==
 * 4 / (2-2) https://scalc2000.herokuapp.com/calculus?query=NCAvICgyLTIp
