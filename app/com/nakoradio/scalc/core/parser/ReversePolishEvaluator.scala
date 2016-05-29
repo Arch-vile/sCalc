@@ -13,10 +13,7 @@ class ReversePolishEvaluator extends ExpressionEvaluator {
     parser(input).reverse.foreach { token =>
       token match {
         case n: NumberTerm => result.push(n.value)
-        case Add()         => result.push(result.pop + result.pop)
-        case Subtract()    => result.push(-1 * (result.pop - result.pop))
-        case Multiply()    => result.push(result.pop * result.pop)
-        case Divide()      => result.push(1 / result.pop * result.pop)
+        case o: Operator   => result.push(o.eval(result.pop, result.pop))
       }
     }
 

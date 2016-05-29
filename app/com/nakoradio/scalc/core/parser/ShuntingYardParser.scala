@@ -81,10 +81,36 @@ class ShuntingYardParser {
 abstract class Term
 case class NumberTerm(value: BigDecimal) extends Term
 
-abstract class Operator extends Term
-case class Add() extends Operator
-case class Subtract() extends Operator
-case class Multiply() extends Operator
-case class Divide() extends Operator
-case class OpenParenth() extends Operator
-case class CloseParenth() extends Operator
+abstract class Operator() extends Term {
+  def eval(value: BigDecimal*): BigDecimal
+}
+case class Add() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    value.reduceRight((s, n) => s + n)
+  }
+}
+case class Subtract() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    value.reduceRight((s, n) => n - s)
+  }
+}
+case class Multiply() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    value.reduceRight((s, n) => s * n)
+  }
+}
+case class Divide() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    value.reduceRight((s, n) => n / s)
+  }
+}
+case class OpenParenth() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    throw new Exception("Parenthesis dont do evaluation")
+  }
+}
+case class CloseParenth() extends Operator {
+  def eval(value: BigDecimal*): BigDecimal = {
+    throw new Exception("Parenthesis dont do evaluation")
+  }
+}
