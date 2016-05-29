@@ -5,7 +5,7 @@ import scala.collection.mutable.Stack
 class ShuntingYardParser {
 
   final val INTEGER_REGEXP = """([-+]?\d+)""".r
-  final val DECIMAL_REGEXP = """([-+]?\d+\.\d+)""".r
+  final val DECIMAL_REGEXP = """([-+]?\d*\.\d+)""".r
 
   def apply(input: String): Stack[Term] = {
 
@@ -69,10 +69,11 @@ class ShuntingYardParser {
   // Will prepare the input to be correctly space separated list of terms
   def prepare(input: String): String = {
     input.replaceAll("""\s""", "") // Remove all white space
+      .replaceAll("""(\d)\(""", "$1*(").replaceAll("""\)(\d)""", ")*$1") // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
       .replaceAll("([\\+\\-\\*\\/\\(\\)])", " $1 ") // Separate operators
       .replaceAll("""  ([\\+\\-]) """, " $1") // Reunite explicit +/- modifiers to numbers
-      .replaceAll("^ - ", "-") // Remove accidental whitespace on operator at start of statement
       .replaceAll("""\s+""", " ") // Clen consequent white spaces
+      .replaceAll("^ - ", "-") // Remove accidental whitespace on term at start of statement
       .trim() // Any extra white space at beginning
   }
 

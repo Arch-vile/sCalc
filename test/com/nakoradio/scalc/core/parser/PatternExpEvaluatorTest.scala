@@ -97,7 +97,7 @@ class PatternExpEvaluatorTest extends Specification {
   "For parenthesis evaluator" should {
     "evaluate parenthesis" in {
       evaluator("1 + ( 2 + 2 ) * 4") must beEqualTo(EvaluatorSuccess(17))
-      evaluator("-1(-1-1-1)-1") must beEqualTo(EvaluatorSuccess(2))
+      evaluator("-1-(-1-1-1)-1") must beEqualTo(EvaluatorSuccess(1))
     }
 
     "evaluate  nested parenthesis" in {
@@ -113,6 +113,8 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate number as multiplier in conjunction with parentheses" in {
       evaluator("2 ( 1 + 2 )") must beEqualTo(EvaluatorSuccess(6))
       evaluator("(1 + 2)2") must beEqualTo(EvaluatorSuccess(6))
+      evaluator("-1(-1-1-1)-1") must beEqualTo(EvaluatorSuccess(2))
+
     }
   }
 
