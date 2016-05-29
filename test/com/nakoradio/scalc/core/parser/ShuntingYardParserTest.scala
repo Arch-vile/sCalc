@@ -65,6 +65,15 @@ class ShuntingYardParserTest extends Specification {
       parser("-4 + 3").reverse must beEqualTo(Stack(NumberTerm(-4), NumberTerm(3), Add()))
     }
 
+    // Error cases
+    "throw exception on mismatched parenthesis" in {
+      parser("2 + 1) +2").reverse must throwA(new ShuntException("Parsing failed due to [mismatched parenthesis] on input [2 + 1) +2]"))
+      parser("2 + (1+2").reverse must throwA(new ShuntException("Parsing failed due to [mismatched parenthesis] on input [2 + (1+2]"))
+    }
+
+    "throw exception on unrecoqnized tokens" in {
+      parser("2 + a").reverse must throwA(new ShuntException("Parsing failed due to [unrecoqnized token 'a'] on input [2 + a]"))
+    }
   }
 
 }

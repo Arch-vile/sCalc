@@ -9,6 +9,16 @@ class ShuntingYardParser {
 
   def apply(input: String): Stack[Term] = {
 
+    try {
+      parse(input)
+    } catch {
+      case ex: ShuntException => throw new ShuntException(f"Parsing failed due to [${ex.getMessage}] on input [$input]")
+      case ex: Exception      => throw new ShuntException(f"Parsing failed due to [Unknown error] on input [$input]")
+    }
+
+  }
+
+  def parse(input: String): Stack[Term] = {
     val outputQueue = new Stack[Term]
     val operators = new Stack[Operator]
     prepare(input).split(" ").map {
@@ -20,7 +30,7 @@ class ShuntingYardParser {
       case "/"               => Divide()
       case "("               => OpenParenth()
       case ")"               => CloseParenth()
-      case y: String         => throw new Exception("E: [" + y.toString + "]")
+      case y: String         => throw new ShuntException(f"unrecoqnized token '${y}'")
 
     }.foreach(token => token match {
       case term: NumberTerm => numeric(term, outputQueue)
@@ -31,6 +41,9 @@ class ShuntingYardParser {
     })
 
     while (!operators.isEmpty) {
+      if (operators.top == OpenParenth() || operators.top == CloseParenth()) {
+        throw new ShuntException("mismatched parenthesis")
+      }
       outputQueue.push(operators.pop);
     }
 
@@ -48,6 +61,9 @@ class ShuntingYardParser {
   def closeParenthesis(outputQueue: Stack[Term], operators: Stack[Operator]) = {
     while (operators.top != OpenParenth()) {
       outputQueue.push(operators.pop)
+      if (operators.isEmpty) {
+        throw new ShuntException("mismatched parenthesis")
+      }
     }
     operators.pop
   }
@@ -81,6 +97,8 @@ class ShuntingYardParser {
   }
 
 }
+
+case class ShuntException(message: String) extends Exception(message)
 
 abstract class Term
 case class NumberTerm(value: BigDecimal) extends Term

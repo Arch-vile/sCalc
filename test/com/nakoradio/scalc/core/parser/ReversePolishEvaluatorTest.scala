@@ -146,19 +146,24 @@ class ReversePolishEvaluatorTest extends Specification {
   }
 
   // Error handling
-  //  "For errors evaluator" should {
-  //    "return error status when evaluation fails" in {
-  //      evaluator("4 + a") must haveClass[EvaluatorFailure]
-  //      evaluator("4---1") must haveClass[EvaluatorFailure]
-  //    }
-  //
-  //    "return nicer error message for not numbers" in {
-  //      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4+a] at position [3]"))
-  //    }
-  //
-  //    "Divide by zero" in {
-  //      evaluator("2 / 0") must beEqualTo(EvaluatorFailure("Division by zero"))
-  //    }
-  //  }
+  "For errors evaluator" should {
+    "Mismatched parenthesis" in {
+      evaluator("2+(1+2") must beEqualTo(EvaluatorFailure("Parsing failed due to [mismatched parentheses] on input [2 + ( 1 + 2]"))
+
+    }
+
+    "return error status when evaluation fails" in {
+      evaluator("4 + a") must haveClass[EvaluatorFailure]
+      evaluator("4---1") must haveClass[EvaluatorFailure]
+    }
+
+    "return nicer error message for not numbers" in {
+      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4+a] at position [3]"))
+    }
+
+    "Divide by zero" in {
+      evaluator("2 / 0") must beEqualTo(EvaluatorFailure("Division by zero"))
+    }
+  }
 
 }
