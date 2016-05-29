@@ -114,6 +114,13 @@ class PatternExpEvaluatorTest extends Specification {
       evaluator("2 ( 1 + 2 )") must beEqualTo(EvaluatorSuccess(6))
       evaluator("(1 + 2)2") must beEqualTo(EvaluatorSuccess(6))
       evaluator("-1(-1-1-1)-1") must beEqualTo(EvaluatorSuccess(2))
+    }
+
+    "evaluate operations on expression on parentheses" in {
+      evaluator("(1+2)*(3+4)") must beEqualTo(EvaluatorSuccess(21))
+      evaluator("2(1+2)(3+4)") must beEqualTo(EvaluatorSuccess(42))
+      evaluator("(1+2)+(2+4)") must beEqualTo(EvaluatorSuccess(9))
+      evaluator("(5+5)/(1+1)") must beEqualTo(EvaluatorSuccess(5))
 
     }
   }
