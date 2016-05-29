@@ -27,6 +27,7 @@ class ShuntingYardParserTest extends Specification {
     "parse numbers" in {
       parser("4") must beEqualTo(Stack(NumberTerm(4)))
       parser("-123.5") must beEqualTo(Stack(NumberTerm(-123.5)))
+      parser("-123,5") must beEqualTo(Stack(NumberTerm(-123.5)))
       parser("-.5") must beEqualTo(Stack(NumberTerm(-.5)))
       parser(".5") must beEqualTo(Stack(NumberTerm(.5)))
     }

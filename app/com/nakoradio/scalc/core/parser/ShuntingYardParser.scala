@@ -93,6 +93,7 @@ class ShuntingYardParser {
       .replaceAll("""([-+*/]) ([-+]) """, "$1 $2") // Attach explicit +/- modifiers to numbers
       .replaceAll("""\( ([-+]) """, "( $1") // Attach +/- to next term if on opening parenthesis
       .replaceAll("^ - ", "-") // Remove accidental whitespace on term at start of statement
+      .replaceAll(""",""", ".") // Also accept ',' as decimal separator
       .trim() // Any extra white space at beginning
   }
 

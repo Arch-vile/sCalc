@@ -24,6 +24,7 @@ class PatternExpEvaluatorTest extends Specification {
     "evaluate basic decimals" in {
       evaluator("12.023") must beEqualTo(EvaluatorSuccess(12.023))
       evaluator("-122.2") must beEqualTo(EvaluatorSuccess(-122.2))
+      evaluator("-122,2") must beEqualTo(EvaluatorSuccess(-122.2))
     }
 
     "evaluate special decimals" in {
