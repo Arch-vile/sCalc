@@ -36,15 +36,14 @@ class ShuntingYardParserTest extends Specification {
 
     "parse double operation symbols" in {
       parser("4 - -3").reverse must beEqualTo(Stack(NumberTerm(4), NumberTerm(-3), Subtract()))
-      parser("4 + -3").reverse must beEqualTo(Stack(NumberTerm(4), NumberTerm(-3), Add()))
-      parser("4 - +3").reverse must beEqualTo(Stack(NumberTerm(4), NumberTerm(3), Subtract()))
-      parser("4 * -3").reverse must beEqualTo(Stack(NumberTerm(4), NumberTerm(-3), Multiply()))
+      parser("5 + -3").reverse must beEqualTo(Stack(NumberTerm(5), NumberTerm(-3), Add()))
+      parser("6 - +3").reverse must beEqualTo(Stack(NumberTerm(6), NumberTerm(3), Subtract()))
+      parser("7 * -3").reverse must beEqualTo(Stack(NumberTerm(7), NumberTerm(-3), Multiply()))
     }
 
     "parse repetive numbers" in {
       parser("-1 - 1 - 1").reverse must beEqualTo(Stack(NumberTerm(-1), NumberTerm(1), Subtract(), NumberTerm(1), Subtract()))
       parser("100 / 10 / 2").reverse must beEqualTo(Stack(NumberTerm(100), NumberTerm(10), Divide(), NumberTerm(2), Divide()))
-
     }
 
     "consider operator precedence" in {
@@ -55,6 +54,7 @@ class ShuntingYardParserTest extends Specification {
     "parse parenthesis" in {
       parser("2 * ( 3 + 4)").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), Add(), Multiply()))
       parser("2 * ( 3 / (4+2) )").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), NumberTerm(2), Add(), Divide(), Multiply()))
+      parser("((2) + 2) * 4").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(2), Add(), NumberTerm(4), Multiply()))
     }
 
     "parse numbers paired to parenthesis" in {

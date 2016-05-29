@@ -10,8 +10,6 @@ class ReversePolishEvaluator extends ExpressionEvaluator {
 
     val result = new Stack[BigDecimal]
 
-    println(parser(input))
-
     parser(input).reverse.foreach { token =>
       token match {
         case n: NumberTerm => result.push(n.value)
@@ -23,11 +21,4 @@ class ReversePolishEvaluator extends ExpressionEvaluator {
 
   }
 
-}
-
-object HelloWorld {
-  def main(args: Array[String]): Unit = {
-    val e = new ReversePolishEvaluator()
-    println(e.apply("-1-(-1 - 1 - 1)-1"))
-  }
 }

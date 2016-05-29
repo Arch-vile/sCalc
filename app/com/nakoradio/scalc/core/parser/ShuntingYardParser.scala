@@ -11,7 +11,6 @@ class ShuntingYardParser {
 
     val outputQueue = new Stack[Term]
     val operators = new Stack[Operator]
-    println(prepare(input))
     prepare(input).split(" ").map {
       case INTEGER_REGEXP(v) => NumberTerm(BigDecimal(v.toString))
       case DECIMAL_REGEXP(v) => NumberTerm(BigDecimal(v.toString))
@@ -66,13 +65,17 @@ class ShuntingYardParser {
     case Multiply() | Divide()          => 2
   }
 
-  // Will prepare the input to be correctly space separated list of terms
+  // Will prepare the input to be correctly spaced separated list of terms
+  // TODO: Most of these could be incorporated to the parser
   def prepare(input: String): String = {
     input.replaceAll("""\s""", "") // Remove all white space
       .replaceAll("""(\d)\(""", "$1*(").replaceAll("""\)(\d)""", ")*$1") // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
-      .replaceAll("([\\+\\-\\*\\/\\(\\)])", " $1 ") // Separate operators
-      .replaceAll("""  ([\\+\\-]) """, " $1") // Reunite explicit +/- modifiers to numbers
-      .replaceAll("""\s+""", " ") // Clen consequent white spaces
+      .replaceAll("""\)\(""", ")*(") // then add missing '*' between parenthesis
+      .replaceAll("([-+*/])", " $1 ") // Separate operators
+      .replaceAll("([\\(\\)])", " $1 ") // Separate parenthesis
+      .replaceAll("""\s+""", " ") // Clean consequent white spaces
+      .replaceAll("""([-+*/]) ([-+]) """, "$1 $2") // Attach explicit +/- modifiers to numbers
+      .replaceAll("""\( ([-+]) """, "( $1") // Attach +/- to next term if on opening parenthesis
       .replaceAll("^ - ", "-") // Remove accidental whitespace on term at start of statement
       .trim() // Any extra white space at beginning
   }
