@@ -10,14 +10,22 @@ class ReversePolishEvaluator extends ExpressionEvaluator {
 
     val result = new Stack[BigDecimal]
 
-    parser(input).reverse.foreach { token =>
-      token match {
-        case n: NumberTerm => result.push(n.value)
-        case o: Operator   => result.push(o.eval(result.pop, result.pop))
+    try {
+      parser(input).reverse.foreach { token =>
+        token match {
+          case n: NumberTerm => result.push(n.value)
+          case o: Operator   => result.push(o.eval(result.pop, result.pop))
+        }
       }
+      if (result.size != 1) {
+        EvaluatorFailure("Malformed input")
+      } else {
+        EvaluatorSuccess(result.pop)
+      }
+    } catch {
+      case ex: ShuntException => EvaluatorFailure(ex.message)
+      case e: Exception       => EvaluatorFailure("Unexpected error")
     }
-
-    EvaluatorSuccess(result.pop)
 
   }
 

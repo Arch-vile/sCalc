@@ -16,6 +16,14 @@ class ShuntingYardParserTest extends Specification {
   val parser = new ShuntingYardParser()
 
   "Parser" should {
+    "ignore whitespace" in {
+      parser("    2    *   (           3  +     4   )     ").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), Add(), Multiply()))
+    }
+
+    "handle expression without whitespace " in {
+      parser("2*(3+4)").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), Add(), Multiply()))
+    }
+
     "parse numbers" in {
       parser("4") must beEqualTo(Stack(NumberTerm(4)))
       parser("-123.5") must beEqualTo(Stack(NumberTerm(-123.5)))
@@ -59,6 +67,7 @@ class ShuntingYardParserTest extends Specification {
 
     "parse numbers paired to parenthesis" in {
       parser("2(3+4)").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), Add(), Multiply()))
+      parser("2 ( 3+4)").reverse must beEqualTo(Stack(NumberTerm(2), NumberTerm(3), NumberTerm(4), Add(), Multiply()))
     }
 
     "parse special cases" in {
@@ -74,6 +83,7 @@ class ShuntingYardParserTest extends Specification {
     "throw exception on unrecoqnized tokens" in {
       parser("2 + a").reverse must throwA(new ShuntException("Parsing failed due to [unrecoqnized token 'a'] on input [2 + a]"))
     }
+
   }
 
 }

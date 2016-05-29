@@ -84,9 +84,9 @@ class ShuntingYardParser {
   // Will prepare the input to be correctly spaced separated list of terms
   // TODO: Most of these could be incorporated to the parser
   def prepare(input: String): String = {
-    input.replaceAll("""\s""", "") // Remove all white space
-      .replaceAll("""(\d)\(""", "$1*(").replaceAll("""\)(\d)""", ")*$1") // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
-      .replaceAll("""\)\(""", ")*(") // then add missing '*' between parenthesis
+    input.replaceAll("""\s+""", " ") // Remove repeating whitespace
+      .replaceAll("""(\d)\s?\(""", "$1*(").replaceAll("""\)\s?(\d)""", ")*$1") // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
+      .replaceAll("""\)\s?\(""", ")*(") // then add missing '*' between parenthesis
       .replaceAll("([-+*/])", " $1 ") // Separate operators
       .replaceAll("([\\(\\)])", " $1 ") // Separate parenthesis
       .replaceAll("""\s+""", " ") // Clean consequent white spaces
@@ -123,7 +123,12 @@ case class Multiply() extends Operator {
 }
 case class Divide() extends Operator {
   def eval(value: BigDecimal*): BigDecimal = {
-    value.reduceRight((s, n) => n / s)
+    value.reduceRight((s, n) => {
+      if (s == 0) {
+        throw new ShuntException("division by zero");
+      }
+      n / s
+    })
   }
 }
 case class OpenParenth() extends Operator {

@@ -9,9 +9,10 @@ import scala.BigDecimal
 class PatternExpEvaluator extends ExpressionEvaluator {
 
   def apply(input: String): EvaluatorResult = {
-    val cleanInput = clean(input)
-    val parser = new PatternParser()
+
     try {
+      val cleanInput = clean(input)
+      val parser = new PatternParser()
       parser.parseAll(parser.expression, cleanInput) match {
         case parser.Success(value, _)        => EvaluatorSuccess(value)
         case parser.NoSuccess(message, next) => EvaluatorFailure(parser.nicerError(cleanInput, message, next))
@@ -22,13 +23,12 @@ class PatternExpEvaluator extends ExpressionEvaluator {
     }
   }
 
-  // Special handling for cases in which number is attached to parenthesis "2(3+2)" -> "2*(3+2)"
   // TODO: These should be included in the grammar
   def clean(input: String): String = {
-    input.replaceAll("\\s", "") // First strip whitespace
-      .replaceAll("""(\d)\(""", "$1*(") //then add missing '*' between number and parenthesis
-      .replaceAll("""\)(\d)""", ")*$1") //then add missing '*' between parenthesis and number
-      .replaceAll("""\)\(""", ")*(") // then add missing '*' between parenthesis
+    input.replaceAll("\\s+", " ") // First strip consequent whitespace
+      .replaceAll("""(\d)\s?\(""", "$1*(") //then add missing '*' between number and parenthesis
+      .replaceAll("""\)\s?(\d)""", ")*$1") //then add missing '*' between parenthesis and number
+      .replaceAll("""\)\s?\(""", ")*(") // then add missing '*' between parenthesis
   }
 
 }

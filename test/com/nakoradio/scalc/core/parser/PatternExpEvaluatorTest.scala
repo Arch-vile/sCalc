@@ -153,11 +153,11 @@ class PatternExpEvaluatorTest extends Specification {
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
       evaluator("4---1") must haveClass[EvaluatorFailure]
-
+      evaluator("4 + 5 5") must haveClass[EvaluatorFailure]
     }
 
     "return nicer error message for not numbers" in {
-      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4+a] at position [3]"))
+      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4 + a] at position [5]"))
     }
 
     "Divide by zero" in {

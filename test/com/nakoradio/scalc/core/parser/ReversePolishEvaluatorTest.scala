@@ -130,18 +130,19 @@ class ReversePolishEvaluatorTest extends Specification {
 
   // Error handling
   "For errors evaluator" should {
-    "catch and wrap error from parser" in {
-      evaluator("2+a") must beEqualTo(EvaluatorFailure("Parsing failed due to [mismatched parentheses] on input [2 + ( 1 + 2]"))
+    "catch and wrap errors from parser" in {
+      evaluator("2+a") must beEqualTo(EvaluatorFailure("Parsing failed due to [unrecoqnized token 'a'] on input [2+a]"))
 
     }
 
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
       evaluator("4---1") must haveClass[EvaluatorFailure]
+      evaluator("4+5 5") must haveClass[EvaluatorFailure]
     }
 
     "Divide by zero" in {
-      evaluator("2 / 0") must beEqualTo(EvaluatorFailure("Division by zero"))
+      evaluator("2 / 0") must beEqualTo(EvaluatorFailure("division by zero"))
     }
   }
 
