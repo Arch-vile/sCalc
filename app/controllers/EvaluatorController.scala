@@ -36,10 +36,10 @@ class EvaluatorController @Inject() (evaluator: ArithmeticEvaluator) extends Con
     }
   }
 
-  def evaluate(expression: String) = Action {
+  def evaluate(expression: String, evaluatorType: String) = Action {
     try {
       val decodedExp = new String(Base64.getDecoder.decode(expression))
-      evaluator(decodedExp) match {
+      evaluator.eval(decodedExp, evaluatorType) match {
         case s: EvaluatorSuccess => Ok(Json.toJson(s))
         case f: EvaluatorFailure => BadRequest(Json.toJson(f))
       }
