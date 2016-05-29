@@ -8,7 +8,7 @@ Project contains two independent implementations for arithmetic calculations. Fi
 # Running application
 Application is should be running on Heroku
 * https://scalc2000.herokuapp.com/calculus?query=<expression>&type=<polish|grammar>
-In which the <expression> is the arithmetic expression in Base64 encoded string and <type> is the type of implementation to use.
+In which the <expression> is the arithmetic expression in Base64 encoded string and <type> is the type of implementation to use (grammar is default).
 
 Here are some urls to test with:
 * 1+2x3 https://scalc2000.herokuapp.com/calculus?query=MSsyKjM=
