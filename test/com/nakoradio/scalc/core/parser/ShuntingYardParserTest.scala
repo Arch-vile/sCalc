@@ -16,7 +16,7 @@ class ShuntingYardParserTest extends Specification {
   val parser = new ShuntingYardParser()
 
   "Parser" should {
-    "parse number" in {
+    "parse numbers" in {
       parser("4") must beEqualTo(Stack(NumberTerm(4)))
       parser("-123.5") must beEqualTo(Stack(NumberTerm(-123.5)))
     }
@@ -26,6 +26,13 @@ class ShuntingYardParserTest extends Specification {
       parser("4 - 3") must beEqualTo(Stack(Subtract(), NumberTerm(3), NumberTerm(4)))
       parser("4 * 3") must beEqualTo(Stack(Multiply(), NumberTerm(3), NumberTerm(4)))
       parser("4 / 3") must beEqualTo(Stack(Divide(), NumberTerm(3), NumberTerm(4)))
+    }
+
+    "parse double operations" in {
+      parser("4 - -3") must beEqualTo(Stack(Subtract(), NumberTerm(-3), NumberTerm(4)))
+      parser("4 + -3") must beEqualTo(Stack(Add(), NumberTerm(-3), NumberTerm(4)))
+      parser("4 - +3") must beEqualTo(Stack(Subtract(), NumberTerm(3), NumberTerm(4)))
+      parser("4 * -3") must beEqualTo(Stack(Multiply(), NumberTerm(-3), NumberTerm(4)))
     }
 
     "parse complex operations" in {
@@ -38,7 +45,12 @@ class ShuntingYardParserTest extends Specification {
 
     "parse parenthesis" in {
       parser("2 * ( 3 + 4 )") must beEqualTo(Stack(Multiply(), Add(), NumberTerm(4), NumberTerm(3), NumberTerm(2)))
+      parser("2 * ( 3 / (4+2) )") must beEqualTo(Stack(Multiply(), Divide(), Add(), NumberTerm(2), NumberTerm(4), NumberTerm(3), NumberTerm(2)))
 
+    }
+
+    "parse special cases" in {
+      parser("-4 + 3") must beEqualTo(Stack(Add(), NumberTerm(3), NumberTerm(-4)))
     }
 
   }

@@ -11,7 +11,7 @@ class ShuntingYardParser {
 
     val outputQueue = new Stack[Term]
     val operators = new Stack[Operator]
-
+    println(prepare(input))
     prepare(input).split(" ").map {
       case INTEGER_REGEXP(v) => NumberTerm(BigDecimal(v.toString))
       case DECIMAL_REGEXP(v) => NumberTerm(BigDecimal(v.toString))
@@ -39,17 +39,14 @@ class ShuntingYardParser {
   }
 
   def numeric(value: NumberTerm, outputQueue: Stack[Term]) = {
-    println("Value: " + value)
     outputQueue.push(value)
   }
 
   def openParenthesis(operators: Stack[Operator]) = {
-    println("Opening parenth");
     operators.push(OpenParenth())
   }
 
   def closeParenthesis(outputQueue: Stack[Term], operators: Stack[Operator]) = {
-    println("Closing parenth");
     while (operators.top != OpenParenth()) {
       outputQueue.push(operators.pop)
     }
@@ -69,8 +66,14 @@ class ShuntingYardParser {
     case Multiply() | Divide()          => 2
   }
 
+  // Will prepare the input to be correctly space separated list of terms
   def prepare(input: String): String = {
-    input
+    input.replaceAll("""\s""", "") // Remove all white space
+      .replaceAll("([\\+\\-\\*\\/\\(\\)])", " $1 ") // Separate operators
+      .replaceAll("""  ([\\+\\-]) """, " $1") // Reunite explicit +/- modifiers to numbers
+      .replaceAll("^ - ", "-") // Remove accidental whitespace on operator at start of statement
+      .replaceAll("""\s+""", " ") // Clen consequent white spaces
+      .trim() // Any extra white space at beginning
   }
 
 }
