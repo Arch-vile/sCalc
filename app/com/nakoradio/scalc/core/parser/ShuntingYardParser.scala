@@ -37,7 +37,7 @@ class ShuntingYardParser {
       case p: OpenParenth   => openParenthesis(operators)
       case p: CloseParenth  => closeParenthesis(outputQueue, operators)
       case o: Operator      => handleOperator(o, outputQueue, operators)
-      case nrt              => throw new Exception("X: [" + nrt + "]")
+      case nrt              => throw new Exception("Logical error: Unknow Term: ${nrt}")
     })
 
     while (!operators.isEmpty) {

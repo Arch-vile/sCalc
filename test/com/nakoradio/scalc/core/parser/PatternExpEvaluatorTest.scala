@@ -153,6 +153,7 @@ class PatternExpEvaluatorTest extends Specification {
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
       evaluator("4---1") must haveClass[EvaluatorFailure]
+
     }
 
     "return nicer error message for not numbers" in {

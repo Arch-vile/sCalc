@@ -5,52 +5,35 @@ import org.specs2.runner.JUnitRunner
 
 import org.specs2.mutable.{ Specification }
 
+/**
+ * Note: We are not mocking ShuntingParser for testing the ReversePolishEvaluator, this
+ * is because these units are tightly related and testing at higher level makes testing
+ * more complex statements less cubersome.
+ * However, some of these tests should be transferred to the ShuntingParser, now there is a bit
+ * too much overlapping between the tests of these two.
+ */
 @RunWith(classOf[JUnitRunner])
 class ReversePolishEvaluatorTest extends Specification {
 
   val evaluator = new ReversePolishEvaluator()
 
-  // Detect numbers
-  "For numbers evaluator" should {
-    "evaluate integers" in {
+  "Calculating numbers" should {
+    "handle single number expressions" in {
       evaluator("4") must beEqualTo(EvaluatorSuccess(4))
-      evaluator("-4") must beEqualTo(EvaluatorSuccess(-4))
-
+      evaluator("-4.4") must beEqualTo(EvaluatorSuccess(-4.4))
     }
-
-    "evaluate basic decimals" in {
-      evaluator("12.023") must beEqualTo(EvaluatorSuccess(12.023))
-      evaluator("-122.2") must beEqualTo(EvaluatorSuccess(-122.2))
-    }
-
-    "evaluate special decimals" in {
-      evaluator(".2") must beEqualTo(EvaluatorSuccess(0.2))
-      evaluator("-.2") must beEqualTo(EvaluatorSuccess(-0.2))
-
-    }
-
   }
 
-  // Basic operations
   "For simple operations evaluator" should {
 
-    "evaluate simple sum" in {
+    "evaluate simple integer expressions to correct values" in {
       evaluator("5 + 1") must beEqualTo(EvaluatorSuccess(6))
-    }
-
-    "evaluate simple subtract" in {
       evaluator("5 - 1") must beEqualTo(EvaluatorSuccess(4))
-    }
-
-    "evaluate simple multiply" in {
       evaluator("3 * 2") must beEqualTo(EvaluatorSuccess(6))
-    }
-
-    "evaluate simple division" in {
       evaluator("7 / 2") must beEqualTo(EvaluatorSuccess(3.5))
       evaluator("-2 / -3").asInstanceOf[EvaluatorSuccess].result.doubleValue() must beCloseTo(0.66666, 0.0001)
-
     }
+
   }
 
   // Combinations
@@ -147,18 +130,14 @@ class ReversePolishEvaluatorTest extends Specification {
 
   // Error handling
   "For errors evaluator" should {
-    "Mismatched parenthesis" in {
-      evaluator("2+(1+2") must beEqualTo(EvaluatorFailure("Parsing failed due to [mismatched parentheses] on input [2 + ( 1 + 2]"))
+    "catch and wrap error from parser" in {
+      evaluator("2+a") must beEqualTo(EvaluatorFailure("Parsing failed due to [mismatched parentheses] on input [2 + ( 1 + 2]"))
 
     }
 
     "return error status when evaluation fails" in {
       evaluator("4 + a") must haveClass[EvaluatorFailure]
       evaluator("4---1") must haveClass[EvaluatorFailure]
-    }
-
-    "return nicer error message for not numbers" in {
-      evaluator("4 + a") must beEqualTo(EvaluatorFailure("Parsing failed due to [`number' expected but `a' found] on input [4+a] at position [3]"))
     }
 
     "Divide by zero" in {
