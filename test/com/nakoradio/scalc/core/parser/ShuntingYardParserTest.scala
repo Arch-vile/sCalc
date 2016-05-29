@@ -6,7 +6,6 @@ import org.specs2.runner.JUnitRunner
 
 import org.specs2.mutable.{ BeforeAfter, Specification }
 import java.util.Base64
-import sun.misc.BASE64Decoder
 import javafx.scene.shape.ClosePath
 import scala.collection.mutable.Stack
 
