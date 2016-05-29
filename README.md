@@ -22,7 +22,7 @@ Here are some urls to test with:
 ## Deviations from spec
 * Returned JSON is correctly formatted by having variable names in double quotes
 
-== Description ==
+# Description
 
 Your task is to setup a simple web service to implement a calculator. The service offers an endpoint that reads a string input and parses it. It should return either an HTTP error code, or a solution to the calculation in JSON form.
 
