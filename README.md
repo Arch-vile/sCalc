@@ -1,5 +1,26 @@
-# sCalc
-Scala - Play Calculator
+# sCalc 2000
+## Scala - Play Calculator
+Learning project for Scala and Play framework. Provides web service to evaluate simple arithmetic expressions.
+
+## Implementation
+Project contains two independent implementations for arithmetic calculations. First is implemented using Scala's combinatory parsers (full of potential there!) and the second follows the traditional Shunting-yard algorithm (https://en.wikipedia.org/wiki/Shunting-yard_algorithm) with simple Reverse Polish notation evaluator.
+
+# Running application
+Application is should be running on Heroku
+* https://scalc2000.herokuapp.com/calculus?query=<expression>&type=<polish|grammar>
+In which the <expression> is the arithmetic expression in Base64 encoded string and <type> is the type of implementation to use.
+
+Here are some urls to test with:
+* 1+2x3 https://scalc2000.herokuapp.com/calculus?query=MSsyKjM=
+* (23x3)/5x(2+3x(21/7))-(4x(4x5)) https://scalc2000.herokuapp.com/calculus?query=KDIzKjMpLzUqKDIrMyooMjEvNykpLSg0LSg0LTUpKQ==
+* 4 / (2-2) https://scalc2000.herokuapp.com/calculus?query=NCAvICgyLTIp
+* 1+(2x4/4+2(3-1x3)/2/3+3)x(3/-2-4+1x1x-4((2x2x(1-5))x2/4)) = 133,5 https://scalc2000.herokuapp.com/calculus?query=MSsoMio0LzQrMigzLTEqMykvMi8zKzMpKigzLy0yLTQrMSoxKi00KCgyKjIqKDEtNSkpKjIvNCkp
+* (2.1+2)/3.2x.3x0.2 https://scalc2000.herokuapp.com/calculus?query=KDIuMSsyKS8zLjIqLjMqMC4y
+* 1+a https://scalc2000.herokuapp.com/calculus?query=MSth
+* encodeError https://scalc2000.herokuapp.com/calculus?query=n
+
+## Deviations from spec
+* Returned JSON is correctly formatted by having variable names in double quotes
 
 == Description ==
 
@@ -38,21 +59,9 @@ Tips and ideas:
 - Heroku might be a good place to publish your service.
 - You might want to google for "Reverse Polish Notation".
 
-# Deviations from spec
-* Returned JSON is correctly formatted by having variable names in double quotes
 
-# Running application
-Should be running on Heroku. Here are some urls to test with:
-* 1+2x3 https://scalc2000.herokuapp.com/calculus?query=MSsyKjM=
-* (23x3)/5x(2+3x(21/7))-(4x(4x5)) https://scalc2000.herokuapp.com/calculus?query=KDIzKjMpLzUqKDIrMyooMjEvNykpLSg0LSg0LTUpKQ==
-* 4 / (2-2) https://scalc2000.herokuapp.com/calculus?query=NCAvICgyLTIp
-* 1+(2x4/4+2(3-1x3)/2/3+3)x(3/-2-4+1x1x-4((2x2x(1-5))x2/4)) = 133,5 https://scalc2000.herokuapp.com/calculus?query=MSsoMio0LzQrMigzLTEqMykvMi8zKzMpKigzLy0yLTQrMSoxKi00KCgyKjIqKDEtNSkpKjIvNCkp
-* (2.1+2)/3.2x.3x0.2 https://scalc2000.herokuapp.com/calculus?query=KDIuMSsyKS8zLjIqLjMqMC4y
-* 1+a https://scalc2000.herokuapp.com/calculus?query=MSth
-* encodeError https://scalc2000.herokuapp.com/calculus?query=n
 
-# Known issues
-* imaginary numbers not supported :)
+
 
 
 
