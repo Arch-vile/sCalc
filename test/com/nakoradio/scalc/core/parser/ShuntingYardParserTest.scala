@@ -82,7 +82,7 @@ class ShuntingYardParserTest extends Specification {
     }
 
     "throw exception on unrecoqnized tokens" in {
-      parser("2 + a").reverse must throwA(new ShuntException("Parsing failed due to [unrecoqnized token 'a'] on input [2 + a]"))
+      parser("2 + a").reverse must throwA(new ShuntException("Parsing failed due to [unrecognized token 'a'] on input [2 + a]"))
     }
 
   }
