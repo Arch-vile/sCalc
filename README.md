@@ -6,7 +6,7 @@ Learning project for Scala and Play framework. Provides web service to evaluate 
 Project contains two independent implementations for arithmetic calculations. First is implemented using Scala's combinatory parsers (full of potential there!) and the second follows the traditional Shunting-yard algorithm (https://en.wikipedia.org/wiki/Shunting-yard_algorithm) with simple Reverse Polish notation evaluator.
 
 # Running application
-Application is should be running on Heroku
+Application should be running on Heroku
 * https://scalc2000.herokuapp.com/calculus?query=_expression_&type=_polish/grammar_
 In which the _expression_ is the arithmetic expression in Base64 encoded string and _type_ is the type of implementation to use (grammar is default).
 
