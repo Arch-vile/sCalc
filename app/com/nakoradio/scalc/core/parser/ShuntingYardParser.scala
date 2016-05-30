@@ -30,7 +30,7 @@ class ShuntingYardParser {
       case "/"               => Divide()
       case "("               => OpenParenth()
       case ")"               => CloseParenth()
-      case y: String         => throw new ShuntException(f"unrecoqnized token '${y}'")
+      case y: String         => throw new ShuntException(f"unrecognized token '${y}'")
 
     }.foreach(token => token match {
       case term: NumberTerm => numeric(term, outputQueue)
